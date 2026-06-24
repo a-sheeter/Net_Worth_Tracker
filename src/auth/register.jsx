@@ -1,0 +1,111 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
+import { supabase } from "../utils/supabase";
+
+export default function Register() {
+
+    /* --- State --- */
+    const [name, setName] = useState("");
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const [errorMessage, setErrorMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+
+    /* --- Helpers --- */
+    function resetForm() {
+        setName("");
+        setUsername("");
+        setEmail("");
+        setPassword("");
+    }
+
+    function resetHelperMessage() {
+        setErrorMessage("");
+        setSuccessMessage("");
+    }
+
+    async function handleRegister(e) {
+        e.preventDefault();
+
+        resetHelperMessage();
+
+        //create authenticated user
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password
+        });
+
+        if (error) {
+            setErrorMessage(error.message);
+            return;
+        }
+
+        const user = data.user;
+
+        //insert into profiles table 
+        if (user) {
+            const { error: profileError } = await supabase
+                .from("profiles")
+                .insert({
+                    id: user.id,
+                    name,
+                    username
+                });
+
+            if (profileError) {
+                setErrorMessage(profileError.message);
+                return;
+            }
+        }
+        resetForm();
+
+        setSuccessMessage("Account created successfully! You can now login.");
+    }
+
+    return (
+        <>
+            <form onSubmit={handleRegister}>
+                <label htmlFor="name">Name</label>
+                <input
+                    id="name"
+                    type="text"
+                    autoComplete="name"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
+                <label htmlFor="username">Username</label>
+                <input
+                    id="username"
+                    type="text"
+                    autoComplete="username"
+                    required
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+                <label htmlFor="email">Email</label>
+                <input
+                    id="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <label htmlFor="password">Password</label>
+                <input
+                    id="password"
+                    type="password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+
+                <button type="submit">Create Account</button>
+            </form>
+        </>
+    )
+}
