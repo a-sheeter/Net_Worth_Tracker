@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { supabase } from "../utils/supabase";
 
 export default function Register() {
+    /* --- Effects --- */
+    useEffect(() => {
+        document.title = "Register | Net Worth Tracker";
+    }, []);
 
     /* --- State --- */
     const [name, setName] = useState("");
@@ -106,6 +110,8 @@ export default function Register() {
 
                 <button type="submit">Create Account</button>
             </form>
+            <p>{successMessage}</p>
+            <p>{errorMessage}</p>
         </>
     )
 }
