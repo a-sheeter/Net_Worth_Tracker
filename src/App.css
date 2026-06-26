@@ -5,3 +5,16 @@
 .logo {
     max-width: 75px;
 }
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    font-weight: 700;
+}
+
+td {
+    padding:15px;
+    border: 1px solid lightgray;
+}

@@ -15,6 +15,7 @@ import PublicRoute from "./auth/PublicRoute";
 
 // pages
 import Index from './pages/Index';
+import Accounts from './pages/Accounts';
 
 // forms
 import AccountForm from './pages/AccountForm';
@@ -86,6 +87,13 @@ export default function App() {
           element={
             <ProtectedRoute user={user}>
               <AccountForm/>
+            </ProtectedRoute>
+          }
+          />
+        <Route path="/accounts"
+          element={
+            <ProtectedRoute user={user}>
+              <Accounts/>
             </ProtectedRoute>
           }
           />
