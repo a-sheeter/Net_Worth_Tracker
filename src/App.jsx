@@ -4,9 +4,6 @@ import { useState, useEffect } from 'react';
 // router
 import { Routes, Route } from "react-router-dom";
 
-// hooks
-import useUser from './hooks/user';
-
 // supabase
 import { supabase } from "./utils/supabase";
 
@@ -19,25 +16,42 @@ import PublicRoute from "./auth/PublicRoute";
 // pages
 import Index from './pages/Index';
 
+// forms
+import AccountForm from './pages/AccountForm';
+
 // styles
 import './App.css'
 
 export default function App() {
   /* --- Auth State --- */
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   /* --- Effects --- */
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session }}) => {
-      setUser(session?.user ?? null);
-    });
+      async function loadSession() {
+        const {
+          data: {session},
+        } = await supabase.auth.getSession();
 
-    const { data: {subscription},} = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
+        setUser(session?.user ?? null);
+        setLoading(false);
+      }
 
-    return () => subscription.unsubscribe();
+      loadSession();
+
+      const {
+        data: {subscription},
+      } = supabase.auth.onAuthStateChange((_event, session) => {
+        setUser(session?.user ?? null);
+      });
+
+      return () => subscription.unsubscribe();
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
 
   /* --- Render --- */
   return (
@@ -65,6 +79,13 @@ export default function App() {
           element={
             <ProtectedRoute user={user}>
               <Index/>
+            </ProtectedRoute>
+          }
+          />
+        <Route path="/account-form"
+          element={
+            <ProtectedRoute user={user}>
+              <AccountForm/>
             </ProtectedRoute>
           }
           />
