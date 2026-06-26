@@ -1,3 +1,7 @@
 .error-text {
     color:red;
 }
+
+.logo {
+    max-width: 75px;
+}

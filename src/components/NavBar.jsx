@@ -2,6 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { supabase } from "../utils/supabase";
 
+import nw_logo from "../assets/NW_logo.png";
+
 export default function NavBar() {
     const navigate = useNavigate();
 
@@ -22,7 +24,7 @@ export default function NavBar() {
     return (
         <>
             <div>
-                <Link to="/">Home</Link>
+                <Link to="/"><img className="logo" src={nw_logo}/></Link>
                 <Link to="/login">Log In</Link>
                 <button type="submit" onClick={handleLogOut}>Log Out</button>
             </div>
