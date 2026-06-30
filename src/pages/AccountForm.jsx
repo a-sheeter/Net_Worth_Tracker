@@ -1,8 +1,12 @@
 // react
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // hooks
 import useUser from "../hooks/useUser";
+
+// components
+import NavBar from "../components/NavBar";
 
 // constants
 import { accountTypes } from "../constants/accountTypes";
@@ -11,6 +15,9 @@ import { accountTypes } from "../constants/accountTypes";
 import { supabase } from "../utils/supabase";
 
 export default function AccountForm() {
+
+    const navigate = useNavigate();
+
     /* --- Effect --- */
     useEffect(() => {
         document.title = "Add Account | Net Worth Tracker";
@@ -27,6 +34,10 @@ export default function AccountForm() {
 
     const selectedType = accountTypes.find(
         type => type.id === typeId
+    );
+
+    const selectedSubtype = selectedType?.subtypes.find(
+        subtype => subtype.id === subtypeId
     );
 
     const balanceType = selectedType?.balanceType;
@@ -55,8 +66,8 @@ export default function AccountForm() {
                 {
                     user_id: user.id,
                     name: name, 
-                    account_type: typeId,
-                    account_subtype: subtypeId,
+                    account_type: selectedType.label,
+                    account_subtype: selectedSubtype.label,
                     url: url,
                     balance: balance,
                     balance_type: balanceType
@@ -69,10 +80,13 @@ export default function AccountForm() {
         }
 
         resetForm();
+
+        navigate("/accounts")
     }
 
     return (
         <>
+        <NavBar/>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="name">Name</label>
                 <input
@@ -83,7 +97,7 @@ export default function AccountForm() {
                     onChange={(e) => setName(e.target.value)}
                 />
                 <label htmlFor="account-type">Account Type</label>
-                <select id="account-type" name="account-type" onChange={(e) => {
+                <select id="account-type" name="account-type" value={typeId} onChange={(e) => {
                     setTypeId(e.target.value); setSubtypeId(""); 
                 }}>
                     <option value="">Choose Account Type</option>
@@ -99,7 +113,7 @@ export default function AccountForm() {
                 </select>
 
                 <label htmlFor="account-subtype">Account Sub-Type</label>
-                <select id="account-subtype" name="account-subtype" onChange={(e) => setSubtypeId(e.target.value)}>
+                <select id="account-subtype" value={subtypeId} name="account-subtype" onChange={(e) => setSubtypeId(e.target.value)}>
                     <option value="">Choose Account Subtype</option>
                     {selectedType?.subtypes.map(subtype => (
                         <option
