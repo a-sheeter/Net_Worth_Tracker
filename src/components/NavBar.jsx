@@ -23,11 +23,13 @@ export default function NavBar() {
     /* --- Render --- */
     return (
         <>
-            <div>
-                <Link to="/"><img className="logo" src={nw_logo}/></Link>
+            <nav>
+                <Link to="/">Home</Link>
+                <Link to="/account-form">Add Account</Link>
+                <Link to="/accounts">Accounts</Link>
                 <Link to="/login">Log In</Link>
                 <button type="submit" onClick={handleLogOut}>Log Out</button>
-            </div>
+            </nav>
         </>
     )
 }
