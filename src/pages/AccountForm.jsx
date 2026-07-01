@@ -16,6 +16,7 @@ import { supabase } from "../utils/supabase";
 
 export default function AccountForm() {
 
+    // consts
     const navigate = useNavigate();
     const { id } = useParams();
     const { user } = useUser();
