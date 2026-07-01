@@ -17,13 +17,12 @@ import { supabase } from "../utils/supabase";
 export default function AccountForm() {
 
     const navigate = useNavigate();
+    const { user } = useUser();
 
     /* --- Effect --- */
     useEffect(() => {
         document.title = "Add Account | Net Worth Tracker";
     }, []);
-
-    const { user } = useUser();
 
     /* --- State --- */
     const [name, setName] = useState("");
@@ -34,10 +33,6 @@ export default function AccountForm() {
 
     const selectedType = accountTypes.find(
         type => type.id === typeId
-    );
-
-    const selectedSubtype = selectedType?.subtypes.find(
-        subtype => subtype.id === subtypeId
     );
 
     const balanceType = selectedType?.balanceType;
@@ -65,9 +60,9 @@ export default function AccountForm() {
             .insert([
                 {
                     user_id: user.id,
-                    name: name, 
-                    account_type: selectedType.label,
-                    account_subtype: selectedSubtype.label,
+                    name: name,
+                    account_type: typeId,
+                    account_subtype: subtypeId,
                     url: url,
                     balance: balance,
                     balance_type: balanceType
@@ -86,7 +81,7 @@ export default function AccountForm() {
 
     return (
         <>
-        <NavBar/>
+            <NavBar />
             <form onSubmit={handleSubmit}>
                 <label htmlFor="name">Name</label>
                 <input
@@ -98,7 +93,7 @@ export default function AccountForm() {
                 />
                 <label htmlFor="account-type">Account Type</label>
                 <select id="account-type" name="account-type" value={typeId} onChange={(e) => {
-                    setTypeId(e.target.value); setSubtypeId(""); 
+                    setTypeId(e.target.value); setSubtypeId("");
                 }}>
                     <option value="">Choose Account Type</option>
                     {accountTypes.map(type => (
