@@ -1,12 +1,12 @@
 export const accountTypes = [
     {
         id: "cash",
-        label: "Cash & Banking",
+        label: "Banking",
         balanceType: "asset",
         subtypes: [
             { id: "checking", label: "Checking" },
             { id: "savings", label: "Savings" },
-            { id: "hysa", label: "High Yield Savings Account" },
+            { id: "hysa", label: "HYSA" },
             { id: "money_market", label: "Money Market" },
             { id: "cd", label: "Certificate of Deposit" },
         ],
