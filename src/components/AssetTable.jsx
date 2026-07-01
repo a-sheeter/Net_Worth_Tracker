@@ -1,5 +1,5 @@
 // react
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // hooks
 import useAccounts from "../hooks/useAccounts";
@@ -8,6 +8,8 @@ import useAccounts from "../hooks/useAccounts";
 import { accountTypes } from "../constants/accountTypes";
 
 export default function AssetTable() {
+
+    const navigate = useNavigate();
 
     /* --- State --- */
     const {
@@ -57,7 +59,10 @@ export default function AssetTable() {
                                     <td>{selectedSubtype?.label ?? account.account_subtype}</td>
                                     <td>{lastUpdated.toLocaleDateString()}{" "} {lastUpdated.toLocaleTimeString()}</td>
                                     <td><Link target="_blank" to={account.url}>{account.name}</Link></td>
-                                    <td>Edit | <button type="button" onClick={() => handleDeleteAccount(account.id)}>Delete</button></td>
+                                    <td><button
+                                        type="button"
+                                        onClick={() => Navigate(`/account-form/${account.id}/edit`)}
+                                    >Edit</button> | <button type="button" onClick={() => handleDeleteAccount(account.id)}>Delete</button></td>
                                 </tr>
                             )
                         }

@@ -1,6 +1,6 @@
 // react
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // hooks
 import useUser from "../hooks/useUser";
@@ -17,6 +17,7 @@ import { supabase } from "../utils/supabase";
 export default function AccountForm() {
 
     const navigate = useNavigate();
+    const { id } = useParams();
     const { user } = useUser();
 
     /* --- Effect --- */
