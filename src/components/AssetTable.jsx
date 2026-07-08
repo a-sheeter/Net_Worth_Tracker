@@ -7,6 +7,9 @@ import useAccounts from "../hooks/useAccounts";
 // data
 import { accountTypes } from "../constants/accountTypes";
 
+//utils
+import { formatCurrency } from "../utils/formatters";
+
 export default function AssetTable() {
 
     const navigate = useNavigate();
@@ -17,9 +20,17 @@ export default function AssetTable() {
         handleDeleteAccount
     } = useAccounts();
 
+    /* --- calculation --- */
+    const totalBalance = accounts
+        .filter(account => account.balance_type === "asset")
+        .reduce((sum, account) => {
+            return sum + account.balance;
+        }, 0);
+
     return (
         <>
             <h2>Assets</h2>
+            <p>Total: {formatCurrency(totalBalance)}</p>
             <table>
                 <thead>
                     <tr>
@@ -44,17 +55,11 @@ export default function AssetTable() {
                             subtype => subtype.id === account.account_subtype
                         );
 
-                        const formatter = new Intl.NumberFormat('en-US', {
-                            style: 'currency',
-                            currency: 'USD',
-                            currencySign: 'accounting'
-                        });
-
                         if (account.balance_type === "asset") {
                             return (
                                 <tr key={account.id}>
                                     <td>{account.name}</td>
-                                    <td>{formatter.format(account.balance)}</td>
+                                    <td>{formatCurrency(account.balance)}</td>
                                     <td>{selectedType?.label ?? account.account_type}</td>
                                     <td>{selectedSubtype?.label ?? account.account_subtype}</td>
                                     <td>{lastUpdated.toLocaleDateString()}{" "} {lastUpdated.toLocaleTimeString()}</td>

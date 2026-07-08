@@ -7,6 +7,9 @@ import useAccounts from "../hooks/useAccounts";
 // data
 import { accountTypes } from "../constants/accountTypes";
 
+//utils 
+import { formatCurrency } from "../utils/formatters";
+
 export default function LiabilityTable() {
 
     /* --- State --- */
@@ -42,17 +45,11 @@ export default function LiabilityTable() {
                             subtype => subtype.id === account.account_subtype
                         );
 
-                        const formatter = new Intl.NumberFormat('en-US', {
-                            style: 'currency',
-                            currency: 'USD',
-                            currencySign: 'accounting'
-                        });
-
                         if (account.balance_type === "liability") {
                             return (
                                 <tr key={account.id}>
                                     <td>{account.name}</td>
-                                    <td>{formatter.format(account.balance)}</td>
+                                    <td>{formatCurrency(account.balance)}</td>
                                     <td>{selectedType?.label ?? account.account_type}</td>
                                     <td>{selectedSubtype?.label ?? account.account_subtype}</td>
                                     <td>{lastUpdated.toLocaleDateString()}{" "} {lastUpdated.toLocaleTimeString()}</td>
