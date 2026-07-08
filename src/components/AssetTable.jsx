@@ -61,7 +61,7 @@ export default function AssetTable() {
                                     <td><Link target="_blank" to={account.url}>{account.name}</Link></td>
                                     <td><button
                                         type="button"
-                                        onClick={() => Navigate(`/account-form/${account.id}/edit`)}
+                                        onClick={() => navigate(`/account-form/${account.id}/edit`)}
                                     >Edit</button> | <button type="button" onClick={() => handleDeleteAccount(account.id)}>Delete</button></td>
                                 </tr>
                             )

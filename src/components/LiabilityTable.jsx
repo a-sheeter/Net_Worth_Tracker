@@ -57,7 +57,10 @@ export default function LiabilityTable() {
                                     <td>{selectedSubtype?.label ?? account.account_subtype}</td>
                                     <td>{lastUpdated.toLocaleDateString()}{" "} {lastUpdated.toLocaleTimeString()}</td>
                                     <td><Link target="_blank" to={account.url}>{account.name}</Link></td>
-                                    <td>Edit | <button type="button" onClick={() => handleDeleteAccount(account.id)}>Delete</button></td>
+                                    <td><button
+                                        type="button"
+                                        onClick={() => navigate(`/account-form/${account.id}/edit`)}
+                                    >Edit</button> | <button type="button" onClick={() => handleDeleteAccount(account.id)}>Delete</button></td>
                                 </tr>
                             )
                         }

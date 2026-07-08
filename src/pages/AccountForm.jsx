@@ -21,10 +21,18 @@ export default function AccountForm() {
     const { id } = useParams();
     const { user } = useUser();
 
+    const isEditing = Boolean(id);
+
     /* --- Effect --- */
     useEffect(() => {
         document.title = "Add Account | Net Worth Tracker";
     }, []);
+
+    useEffect(() => {
+        if (isEditing) {
+            getAccount();
+        }
+    }, [id]);
 
     /* --- State --- */
     const [name, setName] = useState("");
@@ -51,31 +59,69 @@ export default function AccountForm() {
         setBalance("");
     }
 
+    /* --- get account --- */
+    async function getAccount() {
+        const { data, error } = await supabase
+            .from("accounts")
+            .select("*")
+            .eq("id", id)
+            .single();
+
+        if (error) {
+            console.log(error);
+            return;
+        }
+
+        setName(data.name);
+        setUrl(data.url);
+        setBalance(data.balance);
+        setTypeId(data.account_type);
+        setSubtypeId(data.account_subtype);
+    }
+
     /* --- Handlers --- */
     async function handleSubmit(e) {
         e.preventDefault();
 
         setErrorMessage("");
 
-        const { error } = await supabase
-            .from("accounts")
-            .insert([
-                {
-                    user_id: user.id,
+        if (isEditing) {
+            const { editError } = await supabase
+                .from("accounts")
+                .update({
                     name: name,
                     account_type: typeId,
                     account_subtype: subtypeId,
                     url: url,
                     balance: balance,
-                    balance_type: balanceType
-                }
-            ])
+                    balance_type: balanceType,
+                    last_updated: new Date().toISOString()
+                })
+                .eq("id", id);
 
-        if (error) {
-            setErrorMessage(error.message);
-            return;
+            if (editError) {
+                setErrorMessage(editError.message);
+                return;
+            }
+        } else {
+            const {newError} = await supabase
+                .from("account")
+                .insert([
+                    {
+                        user_id: user.id,
+                        name: name,
+                        account_type: typeId,
+                        account_subtype: subtypeId,
+                        url: url,
+                        balance: balance,
+                        balance_type: balanceType
+                    }
+                ]);
+            if (newError) {
+                setErrorMessage(newError.message);
+                return;
+            }
         }
-
         resetForm();
 
         navigate("/accounts")
@@ -84,6 +130,7 @@ export default function AccountForm() {
     return (
         <>
             <NavBar />
+            <h1>{ isEditing ? "Edit Account" : "Add Account" }</h1>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="name">Name</label>
                 <input
@@ -140,7 +187,7 @@ export default function AccountForm() {
                     onChange={(e) => setBalance(e.target.value)}
                 />
 
-                <button type="submit">Add Account</button>
+                <button type="submit">{ isEditing ? "Save Changes" : "Add Account" }</button>
             </form>
         </>
     )

@@ -83,7 +83,7 @@ export default function App() {
             </ProtectedRoute>
           }
           />
-        <Route path="/account-form/new"
+        <Route path="/account-form"
           element={
             <ProtectedRoute user={user}>
               <AccountForm/>
