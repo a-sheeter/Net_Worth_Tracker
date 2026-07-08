@@ -13,6 +13,7 @@ import { accountTypes } from "../constants/accountTypes";
 
 // utils
 import { supabase } from "../utils/supabase";
+import { formatCurrency } from "../utils/formatters";
 
 export default function AccountForm() {
 
@@ -93,7 +94,6 @@ export default function AccountForm() {
                     account_type: typeId,
                     account_subtype: subtypeId,
                     url: url,
-                    balance: balance,
                     balance_type: balanceType,
                     last_updated: new Date().toISOString()
                 })
@@ -104,7 +104,7 @@ export default function AccountForm() {
                 return;
             }
         } else {
-            const {newError} = await supabase
+            const { newError } = await supabase
                 .from("account")
                 .insert([
                     {
@@ -130,7 +130,7 @@ export default function AccountForm() {
     return (
         <>
             <NavBar />
-            <h1>{ isEditing ? "Edit Account" : "Add Account" }</h1>
+            <h1>{isEditing ? "Edit Account" : "Add Account"}</h1>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="name">Name</label>
                 <input
@@ -179,15 +179,14 @@ export default function AccountForm() {
                 />
 
                 <label htmlFor="balance">Balance</label>
-                <input
+                {isEditing ? <span>{formatCurrency(balance)}</span> : <input
                     id="balance"
                     type="number"
                     required
                     value={balance}
                     onChange={(e) => setBalance(e.target.value)}
-                />
-
-                <button type="submit">{ isEditing ? "Save Changes" : "Add Account" }</button>
+                />}
+                <button type="submit">{isEditing ? "Save Changes" : "Add Account"}</button>
             </form>
         </>
     )
