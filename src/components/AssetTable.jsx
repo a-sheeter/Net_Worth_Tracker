@@ -21,7 +21,7 @@ export default function AssetTable() {
     } = useAccounts();
 
     /* --- calculation --- */
-    const totalBalance = accounts
+    const totalAssetBalance = accounts
         .filter(account => account.balance_type === "asset")
         .reduce((sum, account) => {
             return sum + account.balance;
@@ -30,7 +30,7 @@ export default function AssetTable() {
     return (
         <>
             <h2>Assets</h2>
-            <p>Total: {formatCurrency(totalBalance)}</p>
+            <p>Total: {formatCurrency(totalAssetBalance)}</p>
             <table>
                 <thead>
                     <tr>

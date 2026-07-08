@@ -16,6 +16,8 @@ import PublicRoute from "./auth/PublicRoute";
 // pages
 import Index from './pages/Index';
 import Accounts from './pages/Accounts';
+import Assets from './pages/Assets';
+import Liabilities from './pages/Liabilities';
 
 // forms
 import AccountForm from './pages/AccountForm';
@@ -101,6 +103,20 @@ export default function App() {
           element={
             <ProtectedRoute user={user}>
               <Accounts/>
+            </ProtectedRoute>
+          }
+          />
+        <Route path="/assets"
+          element={
+            <ProtectedRoute user={user}>
+              <Assets/>
+            </ProtectedRoute>
+          }
+          />
+        <Route path="/liabilities"
+          element={
+            <ProtectedRoute user={user}>
+              <Liabilities/>
             </ProtectedRoute>
           }
           />
