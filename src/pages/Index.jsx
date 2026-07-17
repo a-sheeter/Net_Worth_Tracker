@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import { supabase } from "../utils/supabase";
 
@@ -11,6 +12,7 @@ export default function Index() {
         <>
             <NavBar/>
             <h1>NET WORTH TRACKER</h1>
+            <button><Link to="/update-networth">Update Net Worth</Link></button>
         </>
     )
 }

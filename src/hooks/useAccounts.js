@@ -57,6 +57,7 @@ export default function useAccounts() {
 
     return {
         accounts,
+        getAccounts,
         handleDeleteAccount
     }
 }

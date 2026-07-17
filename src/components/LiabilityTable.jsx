@@ -9,6 +9,7 @@ import { accountTypes } from "../constants/accountTypes";
 
 //utils 
 import { formatCurrency } from "../utils/formatters";
+import { totalBalanceByType } from "../utils/calculations";
 
 export default function LiabilityTable() {
 
@@ -18,17 +19,11 @@ export default function LiabilityTable() {
         handleDeleteAccount
     } = useAccounts();
 
-    /* --- totals --- */
-    const totalLiabilityBalance = accounts
-        .filter(account => account.balance_type === "liability")
-        .reduce((sum, account) => {
-            return sum + account.balance;
-        }, 0);
 
     return (
         <>
             <h2>Liabilities</h2>
-            <p>Total: {formatCurrency(totalLiabilityBalance)}</p>
+            <p>Total: {formatCurrency(totalBalanceByType(accounts, "liability"))}</p>
             <table>
                 <thead>
                     <tr>

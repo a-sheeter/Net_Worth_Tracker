@@ -18,6 +18,7 @@ import Index from './pages/Index';
 import Accounts from './pages/Accounts';
 import Assets from './pages/Assets';
 import Liabilities from './pages/Liabilities';
+import UpdateNetworth from './pages/UpdateNetworth';
 
 // forms
 import AccountForm from './pages/AccountForm';
@@ -117,6 +118,13 @@ export default function App() {
           element={
             <ProtectedRoute user={user}>
               <Liabilities/>
+            </ProtectedRoute>
+          }
+          />
+        <Route path="/update-networth"
+          element={
+            <ProtectedRoute user={user}>
+              <UpdateNetworth/>
             </ProtectedRoute>
           }
           />
